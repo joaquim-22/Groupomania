@@ -4,8 +4,8 @@ const postRoutes = require('./routes/post.routes')
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { checkUser, requireAuth } = require('./jwtUtils');
-//const crud = require('express-crud-router');
-//const sequelizeCrud = require('express-crud-router-sequelize-v6-connector');
+const {crud} = require('express-crud-router');
+const {sequelizeCrud} = require('express-sequelize-crud');
 const User = require('./models/users')
 
 const app = express();
@@ -19,7 +19,7 @@ const corsOptions = {
     'preflightContinue': false 
 }
 
-//app.use(crud('/admin/users', sequelizeCrud(User)))
+app.use(crud('/admin', sequelizeCrud(User)))
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
