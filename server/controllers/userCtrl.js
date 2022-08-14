@@ -4,7 +4,7 @@ const jwtUtils = require('../jwtUtils');
 const asyncLib = require('async');
 const { getUserId, getInfosUserFromToken } = require('../jwtUtils');
 const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-const PASSWORD_REGEX = /^(?=.*\d).{4,10}$/;
+const PASSWORD_REGEX = /^(?=.*\d).{6,10}$/;
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 
@@ -13,6 +13,27 @@ module.exports = {
     register: (req, res) => {
         const {nom, prenom, dateNaissance, email, password, department} = req.body
         
+        if (
+            !req.body.nom ||
+            !req.body.prenom ||
+            !req.body.dateNaissance ||
+            !req.body.email ||
+            !req.body.password ||
+            !req.body.department
+          ) {
+            return res
+              .status(400)
+              .json({error: 'Champs Invalides'})
+          }
+
+        if(!EMAIL_REGEX.test(email)) {
+            return res.status(400).json({'error': 'Email not valid'})
+        }
+
+        if(!PASSWORD_REGEX.test(password)) {
+            return res.status(400).json({'error': 'Password not valid'})
+        }
+
         asyncLib.waterfall([
             (done) => {
                 //Search if user email already exists
@@ -24,18 +45,18 @@ module.exports = {
                     done(null, userFound)
                 })
                 .catch((err) => {
-                    return res.status(409).json({'error': 'An error occurred'})
+                    console.log(err);
                 })
             },
             (userFound, done) => {
                 //If user not exists, we hash password and passing for next function
                 if(!userFound) {
-                    bcrypt.hash(password, 5, (err, bcryptedPassword) => {
+                    bcrypt.hash(password, 6, (err, bcryptedPassword) => {
                         done(null, userFound, bcryptedPassword)
                     })
                 }
                 else {
-                    return res.status(409).json({'error': 'User Already exists'})
+                    return res.status(409).json({'error': "Cet email est déjà enregistré"})
                 }
             },
             (userFound, bcryptedPassword, done) => {
@@ -86,7 +107,7 @@ module.exports = {
                 done(null, userFound);
             })
             .catch((err) => {
-                return res.status(500).json({ 'error': 'unable to verify user' });
+                return res.status(500).json({ error: 'unable to verify user' });
             });
           },
           (userFound, done) => {
@@ -97,7 +118,7 @@ module.exports = {
                 });
             } 
             else {
-                return res.status(404).json({ 'error': 'user not exist in DB' });
+                return res.status(404).json({ 'error': 'Email ou password ne sont pas valides' });
             }
           },
           (userFound, resBycrypt, done) => {
@@ -236,6 +257,8 @@ module.exports = {
             attributes: [ 'id', 'nom', 'prenom', 'email', 'dateNaissance', 'department', 'profilImage']
         })
         .then((users) => {
+            res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
+            res.setHeader('Content-Range', 5);
             res.status(200).json(users)
         })
         .catch((err) => {

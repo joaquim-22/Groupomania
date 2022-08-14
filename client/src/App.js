@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import RoutesPages from './RoutesPages'
-import './App.css'
 import {UidContext} from './components/AppContext';
 import axios from 'axios';
 import {useDispatch} from 'react-redux'

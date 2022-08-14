@@ -7,24 +7,25 @@ const { checkUser, requireAuth } = require('./jwtUtils');
 const {crud} = require('express-crud-router');
 const {sequelizeCrud} = require('express-sequelize-crud');
 const User = require('./models/users')
+const Post = require('./models/posts')
 
 const app = express();
 
 const corsOptions = {
     origin:'http://localhost:3000',
-    credentials: true,
-    'allowedHeaders': ['sessionId', 'Content-Type'],
-    'exposedHeaders': ['sessionId'],
-    'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    'preflightContinue': false 
+    credentials: true
 }
 
-app.use(crud('/admin', sequelizeCrud(User)))
+app.use(crud('/admin/*', sequelizeCrud(User, Post)))
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use('/Images', express.static('./Images'))
 app.use(cookieParser());
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+});
 
 app.use('/api/user', userRoutes);
 app.use('/api/post', postRoutes);

@@ -6,6 +6,7 @@ router.post("/add", upload.single('file'), postCtrl.addPost);
 router.get("/all", postCtrl.getAllPosts);
 router.delete("/delete/:id", postCtrl.deletePost);
 router.put("/update/:id", postCtrl.updatePost);
+router.get("/update/:id", postCtrl.getOnePost)
 
 //likes
 router.post("/like/:id", postCtrl.likePost)
@@ -14,7 +15,7 @@ router.get("/likes/:id", postCtrl.likesByPost)
 
 //comments
 router.post('/comments/:id', postCtrl.addComments);
-router.get('/comments', postCtrl.getComments);
+router.get('/comments/all', postCtrl.getComments);
 router.delete('/comments/delete/:id', postCtrl.deleteComment);
 router.put('/comments/update/:id', postCtrl.updateComment);
 

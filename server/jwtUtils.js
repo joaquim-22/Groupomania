@@ -84,7 +84,8 @@ module.exports = {
         // admin = decodedToken.admin;
         if (userId == -1) {
           throw "Invalid user ID";
-        } else {
+        } 
+        else {
           return userInfos;
         }
       } catch (error) {

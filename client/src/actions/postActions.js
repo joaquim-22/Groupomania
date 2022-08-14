@@ -92,7 +92,7 @@ export const addComment = (postId, commentContent) => {
 
 export const getComments = () => {
   return (dispatch) => {
-      axios(`http://localhost:3050/api/post/comments`,{
+      axios(`http://localhost:3050/api/post/comments/all`,{
         method: "GET",
       })
       .then((res) => {

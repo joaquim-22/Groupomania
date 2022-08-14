@@ -1,56 +1,58 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import '../styles/comments.css';
-import { deleteComment, updateComment } from "../actions/postActions";
+import { deleteComment } from "../actions/postActions";
+import UpdateComment from './UpdateComment';
+import { Avatar, CardContent, CardHeader, Grid, Typography } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';
+import { Card } from '@material-ui/core';
 
 const CommentsCard = ({ comment }) => {
 
     const dispatch = useDispatch();
     const users = useSelector((state) => state.usersReducer);
     const user = useSelector((state) => state.userReducer);
-    const [newCommentContent, setNewCommentContent] = useState("");
     const deleteComments = () => dispatch(deleteComment(comment.id));
-    const updateComments = () => dispatch(updateComment(comment.id, newCommentContent));
-
+    
+    const convertDateForHuman = (createdAt) => {
+        let converted = new Date(createdAt);
+        return converted.toLocaleString();
+    }
 
     return (
-        <div className='comments-card'>
-            <div className='user-infos-comments'>
-                <div className='photo-user-comment'>
-                    {users &&
-                        users.map((user) => {
-                            return (user.profilImage !== null && user.id === comment.userId) ? <img src={"http://localhost:3050/Images/" + user.profilImage} alt="user" key={user.id}/>
-                            : null
-                        })
+        <Card>
+            <CardHeader
+                    avatar={users &&
+                            users.map((user) => {
+                                return (user.profilImage !== null && user.id === comment.userId) ? <Avatar src={"http://localhost:3050/Images/" + user.profilImage} alt="user" key={user.id}/>
+                                : null
+                        })}
+                    action={
+                        <Grid container>
+                            {(user.id === comment.userId) ? 
+                                <UpdateComment comment={comment}/>
+                            : null}
+
+                            {(user.id === comment.userId ) ? 
+                                <IconButton onClick={deleteComments}>
+                                    <ClearIcon sx={{ color: 'red' }}/>
+                                </IconButton>
+                            : null}
+                        </Grid>
                     }
-                </div>
-                <div id='info-comment-username'>
-                    {users &&
-                        users.map((user) => {
-                                if (comment.userId === user.id) return user.prenom + ' ' + user.nom
+                    title={users &&
+                            users.map((user) => {
+                                if (user.id === comment.userId) return user.prenom + ' ' + user.nom
                                 else return null;
                             })
                             .join("")
-                    }
-                </div>
-                <div className='delete-comment'>
-                    {(user.id === comment.userId || user.isAdmin === true) ? 
-                    <button className='button-delete-comment' onClick={deleteComments}>Delete</button>
-                    : null}
-                </div>
-                <div className='update-comment'>
-                    {(user.id === comment.userId || user.isAdmin === true) ? 
-                    <button className='button-delete-post' onClick={updateComments}>Update</button>
-                    : null}
-                </div>
-            </div>
-            <div className='comment-content'>
-                {(user.id === comment.userId || user.isAdmin === true) ? 
-                <input onChange={(e) => setNewCommentContent(e.target.value)} id='comment-content' placeholder={comment.content}></input>
-                : <span>{comment.content}</span>
-                }
-            </div>
-        </div>
+                        }
+                    subheader={convertDateForHuman(comment.createdAt).slice(0, -3)}
+                />
+                <CardContent>
+                    <Typography>{comment.content}</Typography>
+                </CardContent>
+        </Card>
     )
 }
 

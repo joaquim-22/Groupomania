@@ -1,38 +1,43 @@
-import React from 'react';
-import '../styles/profile.css';
-import Logo from '../components/Logo';
+import React, { useState } from 'react';
 import NavBar from '../components/NavBar';
 import { useSelector } from "react-redux";
 import ProfileUpdate from '../components/ProfileUpdate';
-import axios from 'axios';
+import UserProfile from '../components/UserProfile';
+import { CssBaseline, Container, Box, Button, Grid } from '@mui/material';
 
 const Profile = () => {
-    const user = useSelector((state) => state.userReducer)
-
-    const handleDelete = () => {
-        const userId = user.id;
-        axios({
-            method: "DELETE",
-            url: `http://localhost:3050/api/user/delete/${userId}`,
-            withCredentials: true
-        })
-        .then((res) => {
-            return window.location = '/'
-        })
-        .catch((err) => console.log('----------------------------------------',err))
-    }
+    const user = useSelector((state) => state.userReducer);
+    const [update, setUpdate] = useState(true);
+    const [monProfil, setMonProfil] = useState(false);
+  
+    const handleModals = (e) => {
+      if (e.target.id === "update") {
+        setMonProfil(false);
+        setUpdate(true);
+      } else if (e.target.id === "monProfil") {
+        setUpdate(false);
+        setMonProfil(true);
+      }
+    };
 
     return (
-        <div className='main-container-profile'>
-            <Logo/>
-            <NavBar/>
-            <div className='bienvenue-container'>
-                <h2>Bienvenue {user.prenom}</h2>
-            </div>
-            <div className='container-update'>
-                <ProfileUpdate/>
-            </div>
-            <button onClick={handleDelete}>Delete</button>
+        <div style={{backgroundColor: "#E3E3E3"}}>
+            <CssBaseline/>
+            <Container maxWidth="lg">
+                <NavBar user={user}/>
+                <Box>
+                    <Grid container justifyContent={'space-evenly'} mb={3}>
+                        <Grid item xs={5}>
+                            <Button fullWidth variant="outlined" onClick={handleModals} id="update">Update</Button>
+                        </Grid>
+                        <Grid item xs={5}>
+                            <Button fullWidth variant="outlined" onClick={handleModals} id="monProfil">Mon Profil</Button>
+                        </Grid>
+                    </Grid>
+                    {update && <ProfileUpdate />}
+                    {monProfil && <UserProfile />}
+                </Box>
+            </Container>
         </div>
     )
 }

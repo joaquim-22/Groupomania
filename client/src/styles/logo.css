@@ -1,12 +1,4 @@
-.logo {
+.logo>img{
     width: 100%;
-    background-color: #FF9292;
-    display: flex;
-    justify-content: center;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
-}
-
-.logo>img {
-    width: 60%;
-    height: 100px;
+    object-fit: contain;
 }

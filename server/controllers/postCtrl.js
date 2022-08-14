@@ -11,6 +11,8 @@ module.exports = {
     const userId = getUserId(token)
     const image = ( req.file ? req.file.filename : null )
 
+    if(!content && !image) return res.status(400).json({error: 'Publication vide'})
+
       models.Users.findByPk(userId)
       .then((userId) => {
           models.Posts.create({
@@ -34,10 +36,31 @@ module.exports = {
       attributes: ["id", "userId", "content", "image", "createdAt", "updatedAt"]
     })
       .then((posts) => {
+        res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
+        res.setHeader('Content-Range', 5);
         res.status(200).json(posts);
       })
       .catch((err) => {
         res.status(400).json({ error: "An error occurred" });
+      });
+  },
+
+  getOnePost: (req, res) => {
+    const postId = req.params.id;
+
+    models.Posts.findOne({
+      attributes: ["id", "userId", "content", "image", "createdAt", "updatedAt"],
+      where: { id: postId },
+    })
+      .then((post) => {
+        if (post) {
+          res.status(201).json(post);
+        } else {
+          res.status(404).json({ error: "User not found" });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ error: "Cannot fetch user" });
       });
   },
 
@@ -60,10 +83,10 @@ module.exports = {
             });
         },
         (post, done) => {
-          if (post && user.id === post.userId || user.isAdmin === true) {
+          if (user.id === post.userId || user.isAdmin === true) {
             post
               .update({
-                content: content ? content : postFound.content,
+                content: content ? content : post.content,
               })
               .then((post) => {
                 done(post);
@@ -76,10 +99,9 @@ module.exports = {
           }
         },
       ],
-      (postFound) => {
-        //Hanfling errors
-        if (postFound) {
-          res.status(200).json({ success: "Post successfuly modified" });
+      (post) => {
+        if (post) {
+          res.status(200).json({ success: "Post successfuly modified" })
         } else {
           return res.status(400).json({ error: "An error occurred" });
         }
@@ -117,7 +139,6 @@ module.exports = {
 
     const token = req.cookies.jwt;
     const user = getInfosUserFromToken(token)
-    console.log(user);
     const commentId = req.params.id;
 
     models.Comments.findByPk(commentId)
@@ -313,10 +334,10 @@ module.exports = {
           }
         },
       ],
-      (postFound) => {
+      (comment) => {
         //Hanfling errors
-        if (postFound) {
-          res.status(200).json({ success: "Post successfuly modified" });
+        if (comment) {
+          res.status(200).json({ success: "Comment successfuly modified" });
         } else {
           return res.status(400).json({ error: "An error occurred" });
         }

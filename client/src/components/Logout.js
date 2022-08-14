@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import cookie from 'js-cookie';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { IconButton, Typography } from '@mui/material';
+import { red } from '@mui/material/colors';
 
 const Logout = () => {
 
@@ -23,9 +26,10 @@ const Logout = () => {
     }
 
     return(
-        <div className='button-logout'>
-            <button onClick={logout}>Logout</button>
-        </div>
+        <IconButton onClick={logout}>
+            <Typography>Logout</Typography>
+            <LogoutIcon sx={{ color: 'red' }}/>
+        </IconButton>
     )
 }
 
