@@ -20,6 +20,7 @@ const store = createStore(
 store.dispatch(getUsers());
 store.dispatch(getPosts());
 store.dispatch(getComments());
+store.dispatch(getLikes ());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

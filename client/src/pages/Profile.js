@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import NavBar from '../components/NavBar';
-import { useSelector } from "react-redux";
 import ProfileUpdate from '../components/ProfileUpdate';
 import UserProfile from '../components/UserProfile';
 import { CssBaseline, Container, Box, Button, Grid } from '@mui/material';
 
-const Profile = () => {
-    const user = useSelector((state) => state.userReducer);
+const Profile = ({ user }) => {
     const [update, setUpdate] = useState(true);
     const [monProfil, setMonProfil] = useState(false);
   
@@ -34,8 +32,8 @@ const Profile = () => {
                             <Button fullWidth variant="outlined" onClick={handleModals} id="monProfil">Mon Profil</Button>
                         </Grid>
                     </Grid>
-                    {update && <ProfileUpdate />}
-                    {monProfil && <UserProfile />}
+                    {update && <ProfileUpdate user={user}/>}
+                    {monProfil && <UserProfile user={user}/>}
                 </Box>
             </Container>
         </div>

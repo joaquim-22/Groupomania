@@ -31,7 +31,7 @@ const RegisterForm = () => {
         })
           .then((res) => {
               setFormSubmit(true);
-              onSucess(res.data.success)
+              onSucess(res.data.success);
           })
           .catch((res) => onError(res.response.data.error))
     }
@@ -84,11 +84,11 @@ const RegisterForm = () => {
             <Button variant="contained" fullWidth type="submit">Créer compte</Button>
           </form>
         </Grid>
-{/*         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} variant="filled" severity="error" sx={{ width: '100%' }}>
             {msg}
           </Alert>
-        </Snackbar> */}
+        </Snackbar>
         <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} variant="filled" severity="success" sx={{ width: '100%' }}>
             {msg}

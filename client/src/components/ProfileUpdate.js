@@ -1,32 +1,41 @@
-import { Avatar, Box, Button, Grid, Input, TextField, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Grid, Input, Snackbar, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../actions/userActions";
 
-const ProfileUpdate = () => {
+const ProfileUpdate = ({user}) => {
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
   const [dateNaissance, setDateNaissance] = useState("");
   const [department, setDepartment] = useState("");
-  const [setUpdateForm] = useState(false);
-  const user = useSelector((state) => state.userReducer)
+  const [updateForm, setUpdateForm] = useState(false);
   const dispatch = useDispatch();
-  const [image, setImage] = useState({ preview: '', data: '' })
-  const [status, setStatus] = useState('')
+  const [image, setImage] = useState({ preview: '', data: '' });
+  const [status, setStatus] = useState('');
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [msg, setMsg] = useState('');
+  const [openError, setOpenError] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
 
-  const handleUpdate = () => {
-
-    dispatch(
-      updateUser(
-        nom,
-        prenom,
-        dateNaissance,
-        department
-      )
-    );
-    setUpdateForm(false);
-  };
+  const handleUpdate = (e) => {
+    
+    e.preventDefault()
+    const userId = user.id
+    
+    axios(`http://localhost:3050/api/user/update/${userId}`, {
+      method: "PUT",
+      data: { nom, prenom, dateNaissance, department },
+      withCredentials: true
+    })
+    .then((res) => {
+      setUpdateForm(false);
+      onSucess(res.data.success);
+    })
+    .catch((res) => onError(res.response.data.error));
+  }
 
   const handleDelete = () => {
     const userId = user.id;
@@ -60,8 +69,27 @@ const ProfileUpdate = () => {
     setImage(img)
   }
 
+  //SnackBar
+  const onSucess = (success) => {
+    setMsg(success)
+    setOpenSuccess(true);
+  }    
+  
+  const onError = (error) => {
+    setMsg(error)
+    setOpenError(true);
+  }
+
+  const handleCloseSnack = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenError(false) || setOpenSuccess(false);
+  };
+
+
   return (
-    <div>
+    <>
       <form onSubmit={handleSubmit} className="avatar-update">
         <Grid container justifyContent={'space-around'}>
           {image.preview && <img src={image.preview} alt="Avatar Preview" width='100' height='100' />}
@@ -106,7 +134,17 @@ const ProfileUpdate = () => {
       <Box py={3}>
         <Button variant='outlined' fullWidth color={'error'} onClick={handleDelete}>Delete</Button>
       </Box>
-    </div>
+      <Snackbar open={openError} autoHideDuration={6000} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} variant="filled" severity="error" sx={{ width: '100%' }}>
+            {msg}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} variant="filled" severity="success" sx={{ width: '100%' }}>
+            {msg}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

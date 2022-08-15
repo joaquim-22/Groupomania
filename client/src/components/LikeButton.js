@@ -21,24 +21,21 @@ const style = {
     p: 4,
   };
 
-const LikeButton = ({ post }) => {
+const LikeButton = ({ post, user, users }) => {
     const dispatch = useDispatch();
     const [liked, setLiked] = useState(false);
     const likes = useSelector((state) => state.likesReducer);
-    const user = useSelector((state) => state.userReducer);
-    const users = useSelector((state) => state.usersReducer);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-
     let likesList = likes.length > 0 && likes.filter(like => like.postId === post)
-
+    
     useEffect(() => {
         dispatch(getLikes())
     }, [liked, dispatch]);
 
-    useEffect(() => {
+    useEffect(() => { 
         if (likes.length > 0 && likes.find(like => like.userId === user.id && like.postId === post)) setLiked(true)
         else setLiked(false)
       }, [user.id, likes, post]);

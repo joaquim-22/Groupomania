@@ -5,7 +5,8 @@ import {
   TextField,
   DateField,
   EditButton,
-  DeleteButton
+  DeleteButton,
+  EmailField
 } from 'react-admin'
 
 const UserList = (props) => {
@@ -15,6 +16,12 @@ const UserList = (props) => {
         <TextField source='id' />
         <TextField source='prenom' />
         <TextField source='nom' />
+        <EmailField source='email' />
+        <DateField source='dateNaissance'/>
+        <TextField source='profilImage'/>
+        <TextField source='department'/>
+        <EditButton basepath='user'/>
+        <DeleteButton resource='user/delete'/>
       </Datagrid>
     </List>
   )

@@ -85,9 +85,9 @@ const NavBar = ({user}) => {
         />
           <Grid sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <List>
-              <Link to="/feed">Feed</Link>
-              <Link to="/profile">Profile</Link>
-              <Link to="/">Créer Post</Link>
+              <NavLink to="/feed">Feed</NavLink>
+              <NavLink to="/profile">Profile</NavLink>
+              <NavLink to="/">Créer Post</NavLink>
             </List>
           </Grid>
 
@@ -113,9 +113,15 @@ const NavBar = ({user}) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              {
+              user.isAdmin === true &&
                 <MenuItem>
-                    <Logout/>
+                  <NavLink to="/admin/*">Admin</NavLink>
                 </MenuItem>
+              }
+              <MenuItem>
+                  <Logout/>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

@@ -21,14 +21,13 @@ module.exports = {
             image: image
           })
             .then((newPost) => {
-              res.status(200).json(newPost)
+              res.status(200).json({ success: 'Publication Envoyé' })
             })
             .catch((err) => {
-              console.log(err);
-              res.status(400).json({ error: "An error occurred" });
+              res.status(400).json({ error: "Impossible de envoyer publication, essayez plus tard" });
             });
         })
-      .catch((err) => console.log(err))
+      .catch((err) => res.status(400).json({ error: "Impossible de vérifier l'utilisateur" }))
   },
 
   getAllPosts: (req, res) => {
@@ -212,12 +211,12 @@ module.exports = {
     models.Likes.findAll({
       attributes: ["id", "userId", "postId"]
     })
-      .then((likes) => {
-        res.status(200).json(likes);
-      })
-      .catch((err) => {
-        res.status(400).json({ error: "An error occurred" });
-      });
+    .then((likes) => {
+      res.status(200).json(likes);
+    })
+    .catch((err) => {
+      res.status(400).json({ error: "An error occurred" });
+    });
   },
 
   likesByPost: (req, res) => {
@@ -228,32 +227,30 @@ module.exports = {
         postId: postId
       }
     })
-      .then((likes) => {
-        res.status(200).json(likes);
-      })
-      .catch((err) => {
-        res.status(400).json({ error: "An error occurred" });
-      });
+    .then((likes) => {
+      res.status(200).json(likes);
+    })
+    .catch((err) => {
+      res.status(400).json({ error: "An error occurred" });
+    });
   },
 
   addComments: (req, res) => {
-    //let headerAuth = req.headers["authorization"];
-    const token = req.cookies.jwt
-    const userId = getUserId(token)
-    let postId = req.params.id;
-    let commentContent = req.body.commentContent;
+    const token = req.cookies.jwt;
+    const userId = getUserId(token);
+    const postId = req.params.id;
+    const commentContent = req.body.commentContent;
 
     models.Comments.create({
-        content: commentContent,
-        userId: userId,
-        postId: postId
+      content: commentContent,
+      userId: userId,
+      postId: postId
     })
     .then((comment) => {
-      return res.status(200).json(comment)  
+      return res.status(200).json({success: 'Commentaire envoyée !'});
     })
     .catch((err) => {
-        console.log(err)
-        return res.status(400).json({ error: "Cannot comment" })
+      return res.status(400).json({ error: "Impossible commenter ce post" });
     })
   },
 
@@ -265,10 +262,31 @@ module.exports = {
       attributes: ["id", "userId", "postId", "content", "createdAt", "updatedAt"]
     })
       .then((comments) => {
+        res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
+        res.setHeader('Content-Range', 5);
         res.status(200).json(comments);
       })
       .catch((err) => {
         res.status(400).json({ error: "An error occurred" });
+      });
+  },
+
+  getOneComment: (req, res) => {
+    const commentId = req.params.id;
+
+    models.Comments.findOne({
+      attributes: ["id", "userId", "content", "createdAt", "updatedAt"],
+      where: { id: commentId },
+    })
+      .then((post) => {
+        if (post) {
+          res.status(201).json(post);
+        } else {
+          res.status(404).json({ error: "User not found" });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ error: "Cannot fetch user" });
       });
   },
 

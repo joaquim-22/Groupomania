@@ -1,6 +1,9 @@
 import { GET_USER, UPDATE_USER } from "../actions/userActions";
 
-const initialState = {};
+const initialState = {
+    errors: '',
+    success: ''
+};
 
 export default function userReducer(state = initialState, action) {
     switch (action.type) {
@@ -10,7 +13,9 @@ export default function userReducer(state = initialState, action) {
             return {
                 ...state,
                 data: action.payload,
-            };
+                errors: action.error,
+                success: action.success
+            };   
         default:
             return state;
     }

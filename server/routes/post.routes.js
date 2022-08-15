@@ -16,6 +16,7 @@ router.get("/likes/:id", postCtrl.likesByPost)
 //comments
 router.post('/comments/:id', postCtrl.addComments);
 router.get('/comments/all', postCtrl.getComments);
+router.get('/comments/update/:id', postCtrl.getOneComment);
 router.delete('/comments/delete/:id', postCtrl.deleteComment);
 router.put('/comments/update/:id', postCtrl.updateComment);
 

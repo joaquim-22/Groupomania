@@ -5,7 +5,6 @@ export const DELETE_POST = "DELETE_POST";
 export const UPDATE_POST = "UPDATE_POST";
 export const LIKE_POST = "LIKE_POST";
 export const GET_LIKES = "GET_LIKES";
-export const ADD_COMMENT = "ADD_COMMENT";
 export const GET_COMMENTS = "GET_COMMENTS";
 export const DELETE_COMMENTS = "DELETE_COMMENTS";
 export const UPDATE_COMMENT = "UPDATE_COMMENT";
@@ -73,22 +72,6 @@ export const getLikes = () => {
       .catch((err) => console.log(err + 'error'));
   }
 };
-
-export const addComment = (postId, commentContent) => {
-  return (dispatch) => {
-    axios(`http://localhost:3050/api/post/comments/${postId}`, {
-      method: "POST",
-      data: {
-        commentContent
-      },
-      withCredentials: true
-    })
-    .then((res) => {
-      dispatch({ type: ADD_COMMENT, payload: { postId, commentContent }})
-    })
-    .catch((err) => console.log(err))
-  }
-}
 
 export const getComments = () => {
   return (dispatch) => {

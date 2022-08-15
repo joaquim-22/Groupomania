@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import axios from "axios";
-import { Alert, Box, Button, Card, CardContent, Grid, Input, List, Modal, Snackbar, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Grid, Input, List, Modal, Snackbar, TextField, Typography } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [msg, setMsg] = useState('');
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
 
     const handleClick = () => {
       setOpen(true);
@@ -21,8 +23,7 @@ const LoginForm = () => {
     };
   
   const handleLogin = async (e) => {
-    e.preventDefault();
-
+      e.preventDefault()
       await axios({
         method: "post",
         url: `http://localhost:3050/api/user/login`,
@@ -33,16 +34,17 @@ const LoginForm = () => {
         },
       })
       .then(() => {
-        window.location = '/feed'
+        window.location="/feed"
       })
       .catch((res) => {
         onError(res.response.data.error)
       })
-    }
-    const onError = (error) => {
-      setMsg(error)
-      handleClick()
-    }
+  }
+  
+  const onError = (error) => {
+    setMsg(error)
+    handleClick()
+  }
 
     return (
       <>

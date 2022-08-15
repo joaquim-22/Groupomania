@@ -4,9 +4,10 @@ const { upload } = require('../multerConfig')
 
 router.post("/register", userCtrl.register);
 router.post("/login", userCtrl.login);
-router.put("/update", userCtrl.updateUser);
+router.put("/update/:id", userCtrl.updateUser);
 router.get("/logout", userCtrl.logout);
 router.get("/:id", userCtrl.getUser);
+router.get("/update/:id", userCtrl.getUser);
 router.get("/all/users", userCtrl.getAllUsers);
 router.delete("/delete/:id", userCtrl.deleteUser)
 

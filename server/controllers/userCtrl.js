@@ -5,6 +5,7 @@ const asyncLib = require('async');
 const { getUserId, getInfosUserFromToken } = require('../jwtUtils');
 const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 const PASSWORD_REGEX = /^(?=.*\d).{6,10}$/;
+const DATE_REGEX = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 
@@ -27,11 +28,15 @@ module.exports = {
           }
 
         if(!EMAIL_REGEX.test(email)) {
-            return res.status(400).json({'error': 'Email not valid'})
+            return res.status(400).json({'error': "Email n'est pas valide"})
         }
 
         if(!PASSWORD_REGEX.test(password)) {
-            return res.status(400).json({'error': 'Password not valid'})
+            return res.status(400).json({'error': "Password n'est pas valid"})
+        }
+
+        if(!DATE_REGEX.test(dateNaissance)) {
+            return res.status(400).json({'error': "Date n'est pas valide"})
         }
 
         asyncLib.waterfall([
@@ -144,12 +149,14 @@ module.exports = {
     },
 
     updateUser: (req, res) => {
-        //Using token for having data of the actual user without another login
         const token = req.cookies.jwt
-        const userId = getUserId(token)
-
+        const user = getInfosUserFromToken(token)
+        const userId = req.params.id
         const {nom, prenom, dateNaissance, department} = req.body
-        //const profilImage = req.file.profilImage;
+
+        if(!DATE_REGEX.test(dateNaissance)) {
+            return res.status(400).json({'error': "Date n'est pas valide"})
+        }
 
         asyncLib.waterfall([
             (done) => {
@@ -162,7 +169,7 @@ module.exports = {
                 });
             },
             (userFound, done) => {
-              if(userFound) {
+              if(userFound.id === user.id || user.isAdmin === true) {
 
                 
                 //Updating all data even the older that the user don't change
@@ -170,10 +177,7 @@ module.exports = {
                     nom: (nom ? nom : userFound.nom),
                     prenom: (prenom ? prenom : userFound.prenom),
                     dateNaissance: (dateNaissance ? dateNaissance : userFound.dateNaissance),
-                    //profilImage: (profilImage ? profilImage : userFound.profilImage),
                     department: (department ? department : userFound.department)
-/*                     email: (email ? email : userFound.email),
-                    password: (password ? password : userFound.password) */
                 })
                 .then((userFound) => {
                     done(userFound);
@@ -193,7 +197,7 @@ module.exports = {
                     res.status(200).json({'success': 'User successfuly modified'})
                 } 
                 else {
-                    return res.status(400).json({ 'error': 'An error occurred' });
+                    res.status(400).json({ 'error': 'An error occurred' });
                 }
             }
         );
