@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Grid, Link } from "@mui/material";
+import { Grid } from "@mui/material";
 
 const style = {
     position: 'absolute',
@@ -36,8 +36,7 @@ const LikeButton = ({ post, user, users }) => {
     }, [liked, dispatch]);
 
     useEffect(() => { 
-        if (likes.length > 0 && likes.find(like => like.userId === user.id && like.postId === post)) setLiked(true)
-        else setLiked(false)
+        (likes.length > 0 && likes.find(like => like.userId === user.id && like.postId === post)) ? setLiked(true) : setLiked(false)
       }, [user.id, likes, post]);
 
     const submitLike = () => {

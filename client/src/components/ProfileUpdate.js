@@ -1,8 +1,6 @@
 import { Alert, Avatar, Box, Button, Grid, Input, Snackbar, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { updateUser } from "../actions/userActions";
 
 const ProfileUpdate = ({user}) => {
   const [nom, setNom] = useState("");
@@ -10,12 +8,8 @@ const ProfileUpdate = ({user}) => {
   const [dateNaissance, setDateNaissance] = useState("");
   const [department, setDepartment] = useState("");
   const [updateForm, setUpdateForm] = useState(false);
-  const dispatch = useDispatch();
   const [image, setImage] = useState({ preview: '', data: '' });
   const [status, setStatus] = useState('');
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const [msg, setMsg] = useState('');
   const [openError, setOpenError] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
@@ -45,9 +39,12 @@ const ProfileUpdate = ({user}) => {
         withCredentials: true
     })
     .then((res) => {
-        return window.location = '/'
+      onSucess(res.data.success);
+      setTimeout(function() {
+        window.location.replace('/');
+      }, 5000);
     })
-    .catch((err) => console.log('----------------------------------------',err))
+    .catch((err) => onError(err.response.data.error))
   }
 
   const handleSubmit = async () => {
@@ -92,8 +89,8 @@ const ProfileUpdate = ({user}) => {
     <>
       <form onSubmit={handleSubmit} className="avatar-update">
         <Grid container justifyContent={'space-around'}>
-          {image.preview && <img src={image.preview} alt="Avatar Preview" width='100' height='100' />}
-          <Avatar src={"http://localhost:3050/Images/" + user.profilImage} alt="user" sx={{ width: 100, height: 100 }}/>
+          {(image && image.preview) && <img src={image.preview} alt="Avatar Preview" width='100' height='100' />}
+          {(user && user.profilImage !== undefined) && <Avatar src={"http://localhost:3050/Images/" + user.profilImage} alt="user" sx={{ width: 100, height: 100 }}/> }
           <Input type='file' name='file' onChange={handleFileChange}></Input>
         </Grid>
         <Box py={3}>

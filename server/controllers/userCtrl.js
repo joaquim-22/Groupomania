@@ -323,5 +323,5 @@ module.exports = {
                 }
             }
         )
-      }
+    }
 }

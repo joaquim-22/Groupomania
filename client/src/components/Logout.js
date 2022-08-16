@@ -3,7 +3,6 @@ import axios from 'axios';
 import cookie from 'js-cookie';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { IconButton, Typography } from '@mui/material';
-import { red } from '@mui/material/colors';
 
 const Logout = () => {
 

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {toast} from 'react-toastify';
 
 export const GET_POSTS = "GET_POSTS";
 export const DELETE_POST = "DELETE_POST";
@@ -29,9 +30,15 @@ export const updatePost = (postId, newContent) => {
       withCredentials: true
     })
     .then((res) => {
-      dispatch({ type: UPDATE_POST, payload: { newContent }})
+      if (res.status === 200) {
+        dispatch({ type: UPDATE_POST, payload: { newContent }});
+        toast.success("User updated");
+      }
+      else {
+        toast.error("Error");
+      }
     })
-    .catch((err) => console.log(err))
+    .catch((err) => toast.error("Error"))
   }
 }
 
@@ -42,9 +49,15 @@ export const deletePost = (postId) => {
       withCredentials: true
     })
     .then((res) => {
-      dispatch({ type: DELETE_POST, payload: { postId }})
+      if(res.status === 200) {
+        dispatch({ type: DELETE_POST, payload: { postId }})
+        toast.success("Post suprimé");
+      }
+      else {
+        toast.error("Error");
+      }
     })
-    .catch((err) => console.log(err))
+    .catch((err) => toast.error("Error"))
   }
 }
 
@@ -93,9 +106,15 @@ export const updateComment = (postId, newCommentContent) => {
       withCredentials: true
     })
     .then((res) => {
-      dispatch({ type: UPDATE_COMMENT, payload: { newCommentContent }})
+      if(res.status === 200) {
+        dispatch({ type: UPDATE_COMMENT, payload: { newCommentContent }})
+        toast.success("Commentaire updated");
+      }
+      else {
+        toast.error("Error");
+      }
     })
-    .catch((err) => console.log(err))
+    .catch((err) => toast.error("Error"))
   }
 }
 
@@ -106,8 +125,14 @@ export const deleteComment = (commentId) => {
       withCredentials: true
     })
     .then((res) => {
-      dispatch({ type: DELETE_COMMENTS, payload: { commentId }})
+      if(res.status === 200) {
+        dispatch({ type: DELETE_COMMENTS, payload: { commentId }})
+        toast.success("Commentaire updated");
+      }
+      else {
+        toast.error("Error");
+      }
     })
-    .catch((err) => console.log(err))
+    .catch((err) => toast.error("Error"))
   }
 };

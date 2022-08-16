@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import '../styles/menuHome.css'
+import { Box, Button } from "@mui/material";
 
 const MenuHome = ( props ) => {
   const [registerModal, setRegisterModal] = useState(props.register);
@@ -19,12 +20,12 @@ const MenuHome = ( props ) => {
 
   return (
     <div className="menu-home">
-      <div className="container-menu-home">
-          <button onClick={handleModals} id="register" className={registerModal ? "active-btn" : null}>S'inscrire</button>
-          <button onClick={handleModals} id="login" className={loginModal ? "active-btn" : null}>Se connecter</button>
+      <Box className="container-menu-home">
+          <Button onClick={handleModals} id="register" className={registerModal ? "active-btn" : null}>S'inscrire</Button>
+          <Button onClick={handleModals} id="login" className={loginModal ? "active-btn" : null}>Se connecter</Button>
         {registerModal && <RegisterForm />}
         {loginModal && <LoginForm />}
-      </div>
+      </Box>
     </div>
   );
 };

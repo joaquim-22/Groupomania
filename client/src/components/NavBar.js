@@ -12,6 +12,7 @@ import logoGroupomania from '../assets/logo.svg'
 import Logout from './Logout';
 import { NavLink } from 'react-router-dom';
 import { Grid, Link, List } from '@mui/material';
+import SearchBar from './SearchBar';
 
 const NavBar = ({user}) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -72,6 +73,9 @@ const NavBar = ({user}) => {
                 <MenuItem>
                     <NavLink to="/profile">Profile</NavLink>
                 </MenuItem>
+                <MenuItem>
+                    <SearchBar/>
+                </MenuItem>
             </Menu>
           </Box>
         <Box component="img"
@@ -88,13 +92,14 @@ const NavBar = ({user}) => {
               <NavLink to="/feed">Feed</NavLink>
               <NavLink to="/profile">Profile</NavLink>
               <NavLink to="/">Créer Post</NavLink>
+              <SearchBar/>
             </List>
           </Grid>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar src={"http://localhost:3050/Images/" + user.profilImage} alt="user" key={user.id}/>
+              {user.profilImage !== undefined && <Avatar src={"http://localhost:3050/Images/" + user.profilImage} alt="user" key={user.id}/>}
               </IconButton>
             </Tooltip>
             <Menu

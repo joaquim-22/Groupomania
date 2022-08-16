@@ -19,9 +19,9 @@ const CommentsCard = ({ comment, user, users }) => {
     return (
         <Card>
             <CardHeader
-                    avatar={users &&
+                    avatar={users.length > 0 &&
                             users.map((user) => {
-                                return (user.profilImage !== null && user.id === comment.userId) ? <Avatar src={"http://localhost:3050/Images/" + user.profilImage} alt="user" key={user.id}/>
+                                return (user.profilImage !== undefined && user.id === comment.userId) ? <Avatar src={"http://localhost:3050/Images/" + user.profilImage} alt="user" key={user.id}/>
                                 : null
                         })}
                     action={

@@ -8,6 +8,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch } from 'react-redux';
 import { updatePost } from "../actions/postActions";
 import { Alert, Snackbar } from '@mui/material';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 const UpdatePost = ({post}) => {
     const dispatch = useDispatch();
@@ -72,6 +74,7 @@ const UpdatePost = ({post}) => {
             {msg}
         </Alert>
       </Snackbar>
+      <ToastContainer />
     </div>
   );
 }

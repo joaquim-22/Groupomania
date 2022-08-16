@@ -17,6 +17,7 @@ const Feed = ({ user }) => {
     const [msg, setMsg] = useState('');
     const [open, setOpen] = useState(false);
     const [openSuccess, setOpenSuccess] = useState(false);
+    
 
     useEffect(() => {
         dispatch(getPosts());
@@ -65,7 +66,7 @@ const Feed = ({ user }) => {
             <Container maxWidth="lg">
                 <NavBar user={user}/>
                 <Grid container justifyContent="center" alignItems="center" mt={2}>
-                    {user.profilImage !== null && <Avatar src={"http://localhost:3050/Images/" + user.profilImage} alt="user" key={user.id}/>}
+                    {(user && user.profilImage !== undefined) && <Avatar src={"http://localhost:3050/Images/" + user.profilImage} alt="user" key={user.id}/>}
                     <Typography variant='h5'>Bienvenue {user.prenom}</Typography>
                 </Grid>
 

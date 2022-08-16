@@ -1,14 +1,12 @@
 import React, {useState} from 'react';
 import axios from "axios";
-import { Alert, Box, Button, Grid, Input, List, Modal, Snackbar, TextField, Typography } from '@mui/material';
-import { useNavigate } from "react-router-dom";
+import { Alert, Box, Button, Grid, Snackbar, TextField,} from '@mui/material';
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [msg, setMsg] = useState('');
     const [open, setOpen] = useState(false);
-    const navigate = useNavigate();
 
     const handleClick = () => {
       setOpen(true);
@@ -18,7 +16,6 @@ const LoginForm = () => {
       if (reason === 'clickaway') {
         return;
       }
-  
       setOpen(false);
     };
   

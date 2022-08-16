@@ -93,7 +93,7 @@ const PostCard = ({ post, user }) => {
                 <CardHeader
                     avatar={users.length > 0 &&
                             users.map((user) => {
-                                return (user.profilImage !== null && user.id === post.userId) ? <Avatar src={"http://localhost:3050/Images/" + user.profilImage} alt="user" key={user.id}/>
+                                return (user.profilImage !== undefined && user.id === post.userId) ? <Avatar src={"http://localhost:3050/Images/" + user.profilImage} alt="user" key={user.id}/>
                                 : null
                         })}
                     action={
@@ -120,12 +120,11 @@ const PostCard = ({ post, user }) => {
                 />
 
 
-                {post.image !== null ? 
+                {(post.image !== null || post.image !== undefined) &&
                     <CardMedia
-                        component="img"
-                        image={"http://localhost:3050/Images/" + post.image}    
+                        src={"http://localhost:3050/Images/" + post.image}    
                         alt="Post Image"
-                    />: null    
+                    />
                 }
 
                 {post.content !== "" ?
