@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import axios from "axios";
-import { Alert, Box, Button, Grid, Snackbar, TextField } from "@mui/material";
+import { Alert, Box, Button, Grid, Snackbar, TextField, Typography } from "@mui/material";
 
 const RegisterForm = () => {
 
@@ -55,35 +55,37 @@ const RegisterForm = () => {
 
     return (
       <>
-        <Grid>
-          <form action="" onSubmit={handleRegister}>
-            <Box>
-              <label>Nom</label>
+        <form style={{width: '100%'}} action="" onSubmit={handleRegister}>
+          <Grid container rowSpacing={2} mb={3}>
+            <Grid item xs={12}>
+            <Typography>Nom</Typography>
               <TextField fullWidth type="text" onChange={(e) => setNom(e.target.value)} value={nom}/>
-            </Box>
-            <Box>
-              <label>Prénom</label>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography>Prénom</Typography>
               <TextField fullWidth type="text" onChange={(e) => setPrenom(e.target.value)} value={prenom}/>
-            </Box>
-            <Box>
-              <label>Date Naissance</label>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography>Date Naissance</Typography>
               <TextField fullWidth type="date" onChange={(e) => setDateNaissance(e.target.value)} value={dateNaissance}/>
-            </Box>
-            <Box>
-              <label>Email</label>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography>Email</Typography>
               <TextField fullWidth type="email" onChange={(e) => setEmail(e.target.value)} value={email}/>
-            </Box>
-            <Box>
-              <label>Mot de pass</label>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography>Mot de pass</Typography>
               <TextField fullWidth type="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
-            </Box>
-            <Box>
-              <label>Départment</label>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography>Départment</Typography>
               <TextField fullWidth type="text" onChange={(e) => setDepartment(e.target.value)} value={department}/>
-            </Box>
-            <Button variant="contained" fullWidth type="submit">Créer compte</Button>
-          </form>
-        </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="contained" style={{ height: "50px", fontSize: 20}} fullWidth type="submit">Créer compte</Button>
+            </Grid>
+          </Grid>
+        </form>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} variant="filled" severity="error" sx={{ width: '100%' }}>
             {msg}

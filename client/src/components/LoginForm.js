@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from "axios";
-import { Alert, Box, Button, Grid, Snackbar, TextField,} from '@mui/material';
+import { Alert, Box, Button, Grid, Snackbar, TextField, Typography,} from '@mui/material';
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
@@ -45,19 +45,21 @@ const LoginForm = () => {
 
     return (
       <>
-        <Grid>
-          <form action="" onSubmit={handleLogin}>
-            <Box>
-              <label>Email</label>
-              <TextField error={email === "" || msg !== ""} fullWidth type="email" onChange={(e) => setEmail(e.target.value)} value={email}/>
-            </Box>
-            <Box>
-              <label>Mot de pass</label>
-              <TextField error={password === "" || msg !== ""} fullWidth type="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
-            </Box>
-            <Button variant="contained" fullWidth type="submit" value="Login">Login</Button>
-          </form>
-        </Grid>
+        <form action="" onSubmit={handleLogin}>
+          <Grid container rowSpacing={2}>
+              <Grid item xs={12}>
+                <Typography>Email</Typography>
+                <TextField error={email === ""} fullWidth type="email" onChange={(e) => setEmail(e.target.value)} value={email}/>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography>Mot de pass</Typography>
+                <TextField error={password === ""} fullWidth type="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+              </Grid>
+              <Grid item xs={12}>
+                <Button variant="contained" style={{ height: "50px", fontSize: 20}} fullWidth type="submit" value="Login">Login</Button>
+              </Grid>
+          </Grid>
+        </form>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} variant="filled" severity="error" sx={{ width: '100%' }}>
             {msg}

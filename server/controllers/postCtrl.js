@@ -241,6 +241,8 @@ module.exports = {
     const postId = req.params.id;
     const commentContent = req.body.commentContent;
 
+    if(!commentContent) return res.status(400).json({error: 'Commentaire vide'})
+
     models.Comments.create({
       content: commentContent,
       userId: userId,
@@ -294,7 +296,6 @@ module.exports = {
 
     const token = req.cookies.jwt;
     const user = getInfosUserFromToken(token)
-    console.log(user);
     const commentId = req.params.id;
 
     models.Comments.findByPk(commentId)

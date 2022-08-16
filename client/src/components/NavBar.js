@@ -36,7 +36,6 @@ const NavBar = ({user}) => {
 
   return (
     <>
-      <Container>
         <Toolbar>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -68,10 +67,10 @@ const NavBar = ({user}) => {
               }}
             >
                 <MenuItem>
-                    <NavLink to="/feed">Feed</NavLink>
+                    <Link underline="none" to="/feed">Feed</Link>
                 </MenuItem>
                 <MenuItem>
-                    <NavLink to="/profile">Profile</NavLink>
+                    <Link underline="none" to="/profile">Profile</Link>
                 </MenuItem>
                 <MenuItem>
                     <SearchBar/>
@@ -82,18 +81,17 @@ const NavBar = ({user}) => {
             src={logoGroupomania}
             sx={{
                 height: 35,
-                width: 350,
+                width: 150,
                 maxHeight: { xs: 233, md: 167 },
-                maxWidth: { xs: 350, md: 250 },
+                maxWidth: { xs: 450, md: 250 },
             }}
         />
-          <Grid sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <List>
-              <NavLink to="/feed">Feed</NavLink>
-              <NavLink to="/profile">Profile</NavLink>
-              <NavLink to="/">Créer Post</NavLink>
-              <SearchBar/>
-            </List>
+          <Grid container sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'space-around' }}>
+            <Grid container xs={4} justifyContent={'space-evenly'} align={'center'}>
+              <Link underline="none" href="/feed">Feed</Link>
+              <Link underline="none" href="/profile">Profile</Link>
+            </Grid>
+            <SearchBar/>
           </Grid>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -121,7 +119,7 @@ const NavBar = ({user}) => {
               {
               user.isAdmin === true &&
                 <MenuItem>
-                  <NavLink to="/admin/*">Admin</NavLink>
+                  <Link underline="none" to="/admin/*">Admin</Link>
                 </MenuItem>
               }
               <MenuItem>
@@ -130,7 +128,6 @@ const NavBar = ({user}) => {
             </Menu>
           </Box>
         </Toolbar>
-      </Container>
     </>
   );
 };

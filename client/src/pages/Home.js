@@ -1,26 +1,25 @@
 import React from "react";
 import Logo from "../components/Logo";
 import HomeImage from "../assets/groupomaniaHomeImage.svg";
-import "../styles/home.css";
 import MenuHome from "../components/MenuHome";
-import { UidContext } from "../components/AppContext";
-import { Typography } from "@mui/material";
+import { Box, Container, Typography, CssBaseline } from "@mui/material";
 
 const Home = () => {
 
   return (
-    <div className="home">
-      <div className="homepageImage">
-        <img src={HomeImage} alt="Groupomania"></img>
-      </div>
+    <Container>
+      <CssBaseline/>
       <Logo />
-      <Typography>Un nouveau monde se lève. Découvrons-le.</Typography>
-        <div className="toggle-container">
-            <div className="log-container">
-              <MenuHome RegisterForm={false} LoginForm={true} />
-            </div>
-      </div>
-    </div>
+      <Box>
+        <img style={{width: '100%', height: '100%'}} src={HomeImage} alt="Groupomania"/>
+      </Box>
+      <Typography variant='h4' align={'center'}>Un nouveau monde se lève. Découvrons-le.</Typography>
+      <Box>
+          <Box className="log-container">
+            <MenuHome RegisterForm={false} LoginForm={true} />
+          </Box>
+      </Box>
+    </Container>
   );
 };
 

@@ -5,7 +5,7 @@ import axios from 'axios';
 import NavBar from '../components/NavBar';
 import PostCard from '../components/PostCard';
 import SendIcon from '@mui/icons-material/Send';
-import { Alert, Avatar, Button, Container, CssBaseline, Grid, Input, List, Snackbar, TextField, Typography } from '@mui/material';
+import { Alert, Avatar, Box, Button, Card, Container, CssBaseline, Grid, Input, List, Snackbar, TextField, Typography } from '@mui/material';
 
 
 const Feed = ({ user }) => {
@@ -70,12 +70,14 @@ const Feed = ({ user }) => {
                     <Typography variant='h5'>Bienvenue {user.prenom}</Typography>
                 </Grid>
 
-                <Grid container justifyContent="center" mt={2}>
-                    <TextField variant='filled' fullWidth type="text" onChange={(e) => setContent(e.target.value)} name='content' placeholder='Ecrivez'/>
-                    <Input sx={{m: 2}} type="file" onChange={(e) => setImage(e.target.files[0])} name='image'></Input>
-                    <Button type="submit" style={{backgroundColor: "#FF9292"}} fullWidth variant="contained" endIcon={<SendIcon />} onClick={handlePost}>Publier</Button> 
-                </Grid>
-                
+                <Card>
+                    <Grid container justifyContent="center">
+                        <TextField variant='filled' fullWidth type="text" onChange={(e) => setContent(e.target.value)} name='content' placeholder='Ecrivez'/>
+                        <Input sx={{m: 2}} type="file" onChange={(e) => setImage(e.target.files[0])} name='image'></Input>
+                        <Button type="submit" style={{backgroundColor: "#FF9292"}} fullWidth variant="contained" endIcon={<SendIcon />} onClick={handlePost}>Publier</Button> 
+                    </Grid>
+                </Card>
+                <Typography variant="h4" align='center' my={3}>Dernieres Publications</Typography>
                 <List>
                     {
                     posts.length > 0 && posts.slice().reverse().map((post) => {

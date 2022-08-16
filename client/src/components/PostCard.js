@@ -120,8 +120,9 @@ const PostCard = ({ post, user }) => {
                 />
 
 
-                {(post.image !== null || post.image !== undefined) &&
+                {post.image !== null &&
                     <CardMedia
+                        component='img'
                         src={"http://localhost:3050/Images/" + post.image}    
                         alt="Post Image"
                     />
@@ -138,7 +139,7 @@ const PostCard = ({ post, user }) => {
                 </Button>
 
                 <IconButton onClick={handleOpen}>
-                    <ModeCommentOutlinedIcon sx={{fontSize: 40}}></ModeCommentOutlinedIcon>
+                    <ModeCommentOutlinedIcon sx={{fontSize: 45}}></ModeCommentOutlinedIcon>
                     <Typography>{commentsList.length}</Typography>
                 </IconButton>
                 <Modal

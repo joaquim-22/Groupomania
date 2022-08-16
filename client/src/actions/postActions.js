@@ -127,7 +127,7 @@ export const deleteComment = (commentId) => {
     .then((res) => {
       if(res.status === 200) {
         dispatch({ type: DELETE_COMMENTS, payload: { commentId }})
-        toast.success("Commentaire updated");
+        toast.success("Commentaire suprimé");
       }
       else {
         toast.error("Error");
